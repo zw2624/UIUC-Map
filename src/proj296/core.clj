@@ -107,4 +107,44 @@
                ) ;; return an updated routine
 )
 
+(defn dijkstra
+         [graph]
+         (loop [
+                stack (keys graph)  ;; initialize, 
+                routine {}
+                ]
+           (if (seq stack) 
+             (let [current-location (first stack)]
+               (recur (rest stack)
+                      (visit-node 
+                                  graph 
+                                  current-location 
+                                  routine)))
+              routine)
+           )
+)
+
+(defn shortest-path
+          [Cmap 
+           source   
+           target]
+          
+          (let [  graph                   (:Paths Cmap)
+                  dijkstra-shortest-paths (dijkstra graph)]
+;; we compute the shortest paths
+                (loop [new-target (get dijkstra-shortest-paths target)
+                       routine [target]]
+
+                      (let [next-new-target (get new-target :prev)]
+                            (cond (nil? next-new-target) :error
+                                  (= next-new-target source) (into [source] routine)
+                                  :else (recur (get dijkstra-shortest-paths
+                                         next-new-target)
+       ;; we recur using the previous node
+       ;; and adding it to the result path
+                                  (into [next-new-target] routine)))
+                            )
+                      )
+                )
+          )
 
