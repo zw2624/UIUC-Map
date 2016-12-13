@@ -29,6 +29,10 @@
 	(:Buildings Cmap)
 	)
 
+(defn is_it_in_UIUC
+  [building_name]
+  (contains? Buildings building_name)
+  )
 
 
 (defn add_a_path
@@ -38,7 +42,7 @@
 		(Map. (distinct (conj (:Buildings Cmap) x y)) 
 				(merge  (:Paths Cmap)
 						(merge (hash-map x (merge ((:Paths Cmap) x) (hash-map y minutes))) 
-				               (hash-map y (merge ((:Paths Cmap) y) (hash-map x minutes))))
+				           (hash-map y (merge ((:Paths Cmap) y) (hash-map x minutes))))
 						)
 
 
@@ -120,7 +124,7 @@
                                   graph 
                                   current-location 
                                   routine)))
-              routine)
+             routine)
            )
 )
 
@@ -136,13 +140,11 @@
                        routine [target]]
 
                       (let [next-new-target (get new-target :prev)]
-                            (cond (nil? next-new-target) :error
+                            (cond (nil? next-new-target) (print ("this is not in UIUC"))
                                   (= next-new-target source) (into [source] routine)
                                   :else (recur (get dijkstra-shortest-paths
                                          next-new-target)
-       ;; we recur using the previous node
-       ;; and adding it to the result path
-                                  (into [next-new-target] routine)))
+                                   (into [next-new-target] routine)))
                             )
                       )
                 )
