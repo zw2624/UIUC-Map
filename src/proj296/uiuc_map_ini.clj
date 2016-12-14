@@ -1,0 +1,32 @@
+
+
+(defn uiuc_map []
+	(let [ new_map (Map. nil nil)
+		   ui_map (->> new_map
+				(add_a_path "Altgeld Hall" "Illini Uinon" 1)
+				(add_a_path "Altgeld Hall" "Henry A. Building" 1)
+				(add_a_path "Illini Uinon" "Noyes Lab" 1)
+				(add_a_path "Henry A. Building" "Noyes Lab" 2)
+				(add_a_path "Henry A. Building" "English Building" 1)
+				(add_a_path "Henry A. Building" "Davenport Hall" 2)
+				(add_a_path "Noyes Lab" "English Building" 2)
+				(add_a_path "Noyes Lab" "Davenport Hall" 1)
+				(add_a_path "English Building" "Davenport Hall" 2)
+				(add_a_path "English Building" "Lincoln Hall" 2)
+				(add_a_path "Davenport Hall" "Foreign L. Building" 1)
+				(add_a_path "Lincoln Hall" "Foreign L. Building" 2)
+				(add_a_path "Lincoln Hall" "F. A." 1)
+				(add_a_path "Lincoln Hall" "Gregory Hall" 1)
+				(add_a_path "Foreign L. Building" "F. A." 1)
+				(add_a_path "F. A." "Gregory Hall" 1)
+				(add_a_path "Illini Uinon" "Gg Library" 3)
+				(add_a_path "Gg Library" "DCL" 1)
+				(add_a_path "DCL" "Siebel" 2)
+				(add_a_path "Altgeld Hall" "ECE Building" 5)
+				(add_a_path "DCL" "ECE Building" 2)
+				(add_a_path "F. A." "UGL" 1)
+				(add_a_path "Main Library" "UGL" 1)
+				(add_a_path "Main Library" "Lincoln Hall" 1)
+				)]
+			ui_map)
+    )
