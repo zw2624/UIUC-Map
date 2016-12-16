@@ -2,6 +2,12 @@
 
 FIXME: description
 
+
+## Intro
+This is the final project of my CS296
+I inplemented Graph Structure using clojure
+
+
 ## Installation
 
 Download from http://example.com/FIXME.
@@ -16,13 +22,13 @@ FIXME: explanation
 
 FIXME: listing of options this app accepts.
 
-## Examples
+## Major Functions
 
-...
+(uiuc_map) will generate a map of uiuc
 
-### Bugs
+(shortest-path (uiuc_map) from to) will return the shortest path between from and to.
 
-...
+
 
 ### Any Other Sections
 ### That You Think

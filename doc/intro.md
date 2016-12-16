@@ -1,3 +1,3 @@
 # Introduction to proj296
-
-TODO: write [great documentation](http://jacobian.org/writing/what-to-write/)
+This is the final project of my CS296
+I inplemented Graph Structure using clojure

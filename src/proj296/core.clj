@@ -31,11 +31,6 @@
 	(:Buildings Cmap)
 	)
 
-(defn is_it_in_UIUC
-  [building_name]
-  (contains? Buildings building_name)
-  )
-
 
 (defn add_a_path
 	"add a path to the graph, at the same time, update the verticle book"
@@ -190,13 +185,11 @@
       ui_map)
     )
 
-(def graph (:Paths (uiuc_map)))
 
-(dijkstra graph "Illini Union" "Altgeld Hall")
+
 (shortest-path (uiuc_map) "Illini Union" "DCL")
 
 
-(filter (fn [x] (not (.contains visited x)))
 
 
 
