@@ -3,6 +3,8 @@
 
 (ns proj296.core)
 
+(use 'clojure.data)
+
 (defrecord Map [Buildings Paths])
 ;; Buildings stores all the names of buildings on campus, in string format
 ;; Paths is a hash-map, the K & V are--- building name: paths from it
@@ -77,10 +79,10 @@
 (defn f-update
          [location
           neighbor
-          dist-from-source
-          dist-from-node
+          dist-from-s
+          dist-from-loc
           dist-to-neighbor]
-         (let [dist-new-neighbor (+ dist-from-source dist-from-node)]
+         (let [dist-new-neighbor (+ dist-from-s dist-from-loc)]
            (if (or  (nil? dist-to-neighbor)  (and (not (nil? dist-to-neighbor)) (< dist-new-neighbor dist-to-neighbor)))
 ;; dis-so-far is null or if our location to neighbor is quicker than our previous routine
 ;; we update the better routine to the "routine" book
@@ -91,8 +93,9 @@
   "visit a location and then update all its neighbors' information"
          [graph
           location
+          source
           routine]
-         (let [neighbors (graph location)
+         (let [neighbors (dissoc (graph location) source)
                dist-from-source (if-let [curnode-in-path (get routine location)]
                                         (get curnode-in-path :dist) 0)
        ;; This is the source node, so we'll give it 0 as distance
@@ -112,39 +115,46 @@
 )
 
 (defn dijkstra
-         [graph]
-         (loop [
-                stack (keys graph)  ;; initialize, 
-                routine {}
+         [graph
+          source
+          target
+         ]
+         (loop [stack [source]
+                routine {source {:dist 0, :prev source}}
+                visited []
                 ]
-           (if (seq stack) 
-             (let [current-location (first stack)]
-               (recur (rest stack)
-                      (visit-node 
+           (if (seq stack)
+             (let [current (first stack)] 
+                  (recur (filter (fn [x] (not (.contains visited x)))
+                                 (distinct (into (keys (get graph current)) (rest stack))))
+                         (visit-node 
                                   graph 
-                                  current-location 
-                                  routine)))
+                                  current
+                                  (first visited) 
+                                  routine)
+                         (conj visited current)
+                  
+                  ))
              routine)
-           )
-)
+))
 
 (defn shortest-path
           [Cmap 
            source   
            target]
           
-          (let [  graph                   (:Paths Cmap)
-                  dijkstra-shortest-paths (dijkstra graph)]
+          (let [  graph   (:Paths Cmap)
+                  d-paths (dijkstra graph source target) ]
 ;; we compute the shortest paths
-                (loop [new-target (get dijkstra-shortest-paths target)
+                (loop [new-target (get d-paths target)
                        routine [target]]
 
-                      (let [next-new-target (get new-target :prev)]
-                            (cond (nil? next-new-target) (print ("this is not in UIUC"))
-                                  (= next-new-target source) (into [source] routine)
-                                  :else (recur (get dijkstra-shortest-paths
-                                         next-new-target)
-                                   (into [next-new-target] routine)))
+                      (let [next-target (get new-target :prev)]
+                            (cond (nil? next-target) (print ("this is not in UIUC"))
+                                  (= next-target source) (into [source] routine)
+                                  :default (recur (get d-paths next-target)
+                                               (into [next-target] routine))
+                                  )
                             )
                       )
                 )
@@ -154,23 +164,21 @@
 (defn uiuc_map []
   (let [ new_map (Map. nil nil)
        ui_map (->> new_map
-        (add_a_path "Altgeld Hall" "Illini Uinon" 1)
+        (add_a_path "Altgeld Hall" "Illini Union" 1)
         (add_a_path "Altgeld Hall" "Henry A. Building" 1)
-        (add_a_path "Illini Uinon" "Noyes Lab" 1)
+        (add_a_path "Illini Union" "Noyes Lab" 1)
         (add_a_path "Henry A. Building" "Noyes Lab" 2)
         (add_a_path "Henry A. Building" "English Building" 1)
         (add_a_path "Henry A. Building" "Davenport Hall" 2)
-        (add_a_path "Noyes Lab" "English Building" 2)
         (add_a_path "Noyes Lab" "Davenport Hall" 1)
         (add_a_path "English Building" "Davenport Hall" 2)
         (add_a_path "English Building" "Lincoln Hall" 2)
         (add_a_path "Davenport Hall" "Foreign L. Building" 1)
-        (add_a_path "Lincoln Hall" "Foreign L. Building" 2)
         (add_a_path "Lincoln Hall" "F. A." 1)
         (add_a_path "Lincoln Hall" "Gregory Hall" 1)
         (add_a_path "Foreign L. Building" "F. A." 1)
         (add_a_path "F. A." "Gregory Hall" 1)
-        (add_a_path "Illini Uinon" "Gg Library" 3)
+        (add_a_path "Illini Union" "Gg Library" 3)
         (add_a_path "Gg Library" "DCL" 1)
         (add_a_path "DCL" "Siebel" 2)
         (add_a_path "Altgeld Hall" "ECE Building" 5)
@@ -182,10 +190,13 @@
       ui_map)
     )
 
+(def graph (:Paths (uiuc_map)))
+
+(dijkstra graph "Illini Union" "Altgeld Hall")
+(shortest-path (uiuc_map) "Illini Union" "DCL")
 
 
-
-
+(filter (fn [x] (not (.contains visited x)))
 
 
 
