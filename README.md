@@ -1,6 +1,8 @@
 # proj296
 
-FIXME: description
+# Author 作者
+Zihe Wang
+王子赫
 
 
 ## Intro
@@ -8,19 +10,6 @@ This is the final project of my CS296
 I inplemented Graph Structure using clojure
 
 
-## Installation
-
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar proj296-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
 
 ## Major Functions
 
@@ -29,10 +18,6 @@ FIXME: listing of options this app accepts.
 (shortest-path (uiuc_map) from to) will return the shortest path between from and to.
 
 
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
